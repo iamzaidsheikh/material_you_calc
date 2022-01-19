@@ -60,6 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _expression = 'INVALID';
       });
+    } on StateError {
+      setState(() {
+        _expression = 'INVALID';
+      });
     }
   }
 
