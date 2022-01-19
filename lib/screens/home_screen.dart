@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final Color _primaryColorDark = const Color.fromRGBO(218, 126, 112, 1);
   final Color _secondaryColor = const Color.fromRGBO(65, 61, 75, 1);
   final Color _backgroundColor = const Color.fromRGBO(252, 237, 234, 1);
+  final double _numFontSize = 30.0;
 
   String _expression = ' ';
 
@@ -55,12 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _expression = 'INVALID';
       });
+    } on RangeError {
+      setState(() {
+        _expression = 'INVALID';
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
     final _appBar = AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
@@ -75,14 +79,18 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
     );
+    final _size = MediaQuery.of(context).size;
+    final _height = _size.height -
+        _appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    final _width = _size.width;
+
     return Scaffold(
       appBar: _appBar,
       body: Container(
-          width: _size.width,
-          height: _size.height -
-              _appBar.preferredSize.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom,
+          width: _width,
+          height: _height,
           color: _backgroundColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -90,8 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               //Main display
               Container(
-                height: _size.height * 0.3,
-                width: _size.width,
+                height: _height * 0.3,
+                width: _width,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(30.0),
@@ -108,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       _expression,
                       textAlign: TextAlign.right,
                       style: GoogleFonts.poppins(
-                        fontSize: 60,
+                        fontSize: 50,
                         color: _secondaryColor,
                       ),
                     ),
@@ -117,246 +125,271 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    //Row 0
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      //Row 0
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           SmallButton(
-                              buttonColor: _backgroundColor,
-                              text: '(   )',
-                              textColor: _secondaryColor),
+                            buttonColor: _backgroundColor,
+                            text: '(   )',
+                            textColor: _secondaryColor,
+                            radius: _height * 0.05,
+                          ),
                           SmallButton(
-                              buttonColor: _backgroundColor,
-                              text: String.fromCharCodes(Runes('\u03C0')),
-                              textColor: _secondaryColor),
+                            buttonColor: _backgroundColor,
+                            text: String.fromCharCodes(Runes('\u03C0')),
+                            textColor: _secondaryColor,
+                            radius: _height * 0.05,
+                          ),
                           SmallButton(
-                              buttonColor: _backgroundColor,
-                              text: 'e',
-                              textColor: _secondaryColor),
+                            buttonColor: _backgroundColor,
+                            text: 'e',
+                            textColor: _secondaryColor,
+                            radius: _height * 0.05,
+                          ),
                           SmallButton(
-                              buttonColor: _backgroundColor,
-                              text: '!',
-                              textColor: _secondaryColor),
+                            buttonColor: _backgroundColor,
+                            text: '!',
+                            textColor: _secondaryColor,
+                            radius: _height * 0.05,
+                          ),
                           SmallButton(
-                              buttonColor: _primaryColor,
-                              text: '< >',
-                              textColor: _secondaryColor),
+                            buttonColor: _primaryColor,
+                            text: '< >',
+                            textColor: _secondaryColor,
+                            radius: _height * 0.05,
+                          ),
                         ],
                       ),
-                    ),
 
-                    //Row 1
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        LargeButton(
-                          buttonColor: _secondaryColor,
-                          text: 'AC',
-                          textColor: Colors.white,
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.normal,
-                          callback: allClear,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColor,
-                          text: String.fromCharCodes(Runes('\u0025')),
-                          textColor: _secondaryColor,
-                          fontSize: 45.0,
-                          fontWeight: FontWeight.w200,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColor,
-                          text: String.fromCharCodes(Runes('\u00F7')),
-                          textColor: _secondaryColor,
-                          fontSize: 50.0,
-                          fontWeight: FontWeight.w200,
-                          callback: buttonPressed,
-                        ),
-                        ElevatedButton(
-                          onPressed: clear,
-                          child: Icon(
-                            Icons.backspace_outlined,
-                            color: _secondaryColor,
-                            size: 30,
+                      //Row 1
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          LargeButton(
+                            buttonColor: _secondaryColor,
+                            text: 'AC',
+                            textColor: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: allClear,
                           ),
-                          style: ElevatedButton.styleFrom(
-                              primary: _primaryColor,
-                              padding: EdgeInsets.zero,
-                              shape: const CircleBorder(side: BorderSide.none),
-                              minimumSize:
-                                  Size(_size.width * 0.2, _size.width * 0.2),
-                              elevation: 0),
-                        ),
-                      ],
-                    ),
-                    //Row 2
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '7',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '8',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '9',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColor,
-                          text: String.fromCharCodes(Runes('\u00D7')),
-                          textColor: _secondaryColor,
-                          fontSize: 55.0,
-                          fontWeight: FontWeight.w200,
-                          callback: buttonPressed,
-                        ),
-                      ],
-                    ),
-                    //Row 3
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '4',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '5',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '6',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColor,
-                          text: String.fromCharCodes(Runes('\u2212')),
-                          textColor: _secondaryColor,
-                          fontSize: 55.0,
-                          fontWeight: FontWeight.w200,
-                          callback: buttonPressed,
-                        ),
-                      ],
-                    ),
-                    //Row 4
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '1',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '2',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '3',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColor,
-                          text: String.fromCharCodes(Runes('\u002B')),
-                          textColor: _secondaryColor,
-                          fontSize: 55.0,
-                          fontWeight: FontWeight.w200,
-                          callback: buttonPressed,
-                        ),
-                      ],
-                    ),
-                    //Row 5
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '0',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        LargeButton(
-                          buttonColor: _primaryColorLight,
-                          text: '.',
-                          textColor: _secondaryColor,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.normal,
-                          callback: buttonPressed,
-                        ),
-                        ElevatedButton(
-                          onPressed: evaluate,
-                          child: Text(
-                            String.fromCharCodes(Runes('\u003D')),
-                            style: GoogleFonts.poppins(
-                              fontSize: 35,
-                              color: Colors.white,
+                          LargeButton(
+                            buttonColor: _primaryColor,
+                            text: String.fromCharCodes(Runes('\u0025')),
+                            textColor: _secondaryColor,
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.w200,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColor,
+                            text: String.fromCharCodes(Runes('\u00F7')),
+                            textColor: _secondaryColor,
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.w200,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          ElevatedButton(
+                            onPressed: clear,
+                            child: Icon(
+                              Icons.backspace_outlined,
+                              color: _secondaryColor,
+                              size: 25.0,
                             ),
+                            style: ElevatedButton.styleFrom(
+                                primary: _primaryColor,
+                                padding: EdgeInsets.zero,
+                                shape:
+                                    const CircleBorder(side: BorderSide.none),
+                                minimumSize: Size(_height * 0.1, _height * 0.1),
+                                elevation: 0),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              primary: _primaryColorDark,
-                              padding: EdgeInsets.zero,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.horizontal(
-                                      left: Radius.circular(40.0),
-                                      right: Radius.circular(40.0))),
-                              minimumSize:
-                                  Size(_size.width * 0.4, _size.width * 0.2),
-                              elevation: 0),
-                        )
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      //Row 2
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '7',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '8',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '9',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColor,
+                            text: String.fromCharCodes(Runes('\u00D7')),
+                            textColor: _secondaryColor,
+                            fontSize: 35.0,
+                            fontWeight: FontWeight.w200,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                        ],
+                      ),
+                      //Row 3
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '4',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '5',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '6',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColor,
+                            text: String.fromCharCodes(Runes('\u2212')),
+                            textColor: _secondaryColor,
+                            fontSize: 35.0,
+                            fontWeight: FontWeight.w200,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                        ],
+                      ),
+                      //Row 4
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '1',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '2',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '3',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColor,
+                            text: String.fromCharCodes(Runes('\u002B')),
+                            textColor: _secondaryColor,
+                            fontSize: 35.0,
+                            fontWeight: FontWeight.w200,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                        ],
+                      ),
+                      //Row 5
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '0',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          LargeButton(
+                            buttonColor: _primaryColorLight,
+                            text: '.',
+                            textColor: _secondaryColor,
+                            fontSize: _numFontSize,
+                            fontWeight: FontWeight.normal,
+                            radius: _height * 0.1,
+                            callback: buttonPressed,
+                          ),
+                          ElevatedButton(
+                            onPressed: evaluate,
+                            child: Text(
+                              String.fromCharCodes(Runes('\u003D')),
+                              style: GoogleFonts.poppins(
+                                fontSize: 35,
+                                color: Colors.white,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: _primaryColorDark,
+                                padding: EdgeInsets.zero,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.horizontal(
+                                        left: Radius.circular(40.0),
+                                        right: Radius.circular(40.0))),
+                                minimumSize:
+                                    Size(_height * 0.22, _height * 0.1),
+                                elevation: 0),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              )),
+              ),
               //Buttons
             ],
           )),

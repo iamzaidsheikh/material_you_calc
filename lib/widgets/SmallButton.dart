@@ -5,13 +5,15 @@ class SmallButton extends StatelessWidget {
   final Color buttonColor;
   final Color textColor;
   final String text;
+  final double radius;
 
-  const SmallButton(
-      {Key? key,
-      required this.buttonColor,
-      required this.text,
-      required this.textColor})
-      : super(key: key);
+  const SmallButton({
+    Key? key,
+    required this.buttonColor,
+    required this.text,
+    required this.textColor,
+    required this.radius,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class SmallButton extends StatelessWidget {
         backgroundColor: buttonColor,
         elevation: 0,
         shape: const CircleBorder(side: BorderSide.none),
-        minimumSize: Size(_size.width * 0.1, _size.width * 0.1),
+        minimumSize: Size(radius, radius),
       ),
     );
   }

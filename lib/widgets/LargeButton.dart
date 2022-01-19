@@ -9,6 +9,7 @@ class LargeButton extends StatelessWidget {
   final String text;
   final double fontSize;
   final FontWeight fontWeight;
+  final double radius;
   final Function callback;
 
   const LargeButton(
@@ -18,6 +19,7 @@ class LargeButton extends StatelessWidget {
       required this.textColor,
       required this.fontSize,
       required this.fontWeight,
+      required this.radius,
       required this.callback})
       : super(key: key);
 
@@ -53,7 +55,7 @@ class LargeButton extends StatelessWidget {
         backgroundColor: buttonColor,
         padding: EdgeInsets.zero,
         shape: const CircleBorder(side: BorderSide.none),
-        minimumSize: Size(_size.width * 0.2, _size.width * 0.2),
+        minimumSize: Size(radius, radius),
       ),
     );
   }
